@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedded Engineer Portfolio | Game Mode</title>
+  <meta name="description"
+    content="Portfolio of an Embedded Engineer specializing in Analog, Digital, and Embedded Systems. Experience it as a game.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Outfit:wght@300;400;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="dark-mode crt">
+  <div class="screen-container">
+    <div id="app">
+      <!-- Loading Screen / Boot Console -->
+      <div id="loader" class="screen active">
+        <div class="terminal-loader">
+          <div class="boot-header">
+            <div class="console-logo glitch" data-text="ENGINEIYER.OS">ENGINEIYER.OS</div>
+            <div class="version">v2.0.24</div>
+          </div>
+          <div id="boot-log" class="terminal-content">
+            <!-- Log messages will be typed here -->
+          </div>
+
+          <div id="boot-menu" class="boot-menu hidden">
+            <div class="menu-item active" data-option="about">1.) ABOUT ME</div>
+            <div class="menu-item" data-option="github">2.) GITHUB</div>
+            <div class="menu-item" data-option="blogs">3.) BLOGS</div>
+            <div class="menu-item" data-option="connect">4.) CONNECT WITH ME</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Canvas Context -->
+      <div id="game-container" class="hidden">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- UI Overlays -->
+        <div id="ui-layer">
+          <div class="hud-top">
+            <div class="status-panel">
+              <div class="label">CORE_TEMP</div>
+              <div class="value">42°C</div>
+            </div>
+            <div class="status-panel">
+              <div class="label">SIGNAL_STRENGTH</div>
+              <div class="value pulse">98.4%</div>
+            </div>
+          </div>
+
+          <div id="interaction-prompt" class="hidden">
+            Press <span class="key">E</span> to Inspect
+          </div>
+
+          <div class="instructions">
+            Use <span class="key">WASD</span> to move | <span class="key">ESC</span> for Menu
+          </div>
+        </div>
+
+        <!-- Modals for Content -->
+        <div id="content-modal" class="modal hidden">
+          <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div id="modal-body">
+              <!-- Content injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+
+</html>
