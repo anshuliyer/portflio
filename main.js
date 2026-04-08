@@ -100,8 +100,19 @@ const content = {
                 <p style="margin-top:15px">Big fan of first principles—if I can’t explain it from scratch, I probably don’t understand it yet.</p>
             </div>
         </div>
+    `,
+    connect: `
+        <div class="embedded">
+            <h1 class="modal-title">> CONNECT.md</h1>
+            <div style="margin-top:30px; line-height:2">
+                <p>> EMAIL: <a href="mailto:anshul.iyer@gmail.com" style="color:var(--accent-digital)">anshul.iyer@gmail.com</a></p>
+                <p>> LINKEDIN: <a href="https://www.linkedin.com/in/anshul-iyer" target="_blank" style="color:var(--accent-digital)">linkedin.com/in/anshul-iyer</a></p>
+                <p style="margin-top:20px; color:var(--text-secondary)">// CHANNEL_ESTABLISHED //</p>
+            </div>
+        </div>
     `
 };
+
 
 // --- Background Vias & Traces ---
 const vias = [];
@@ -271,15 +282,13 @@ function selectOption(option) {
         gameContainer.classList.remove('hidden');
         gameState = 'game';
         requestAnimationFrame(animate);
-    } else if (option === 'about') {
+    } else if (option === 'about' || option === 'connect') {
         modalBody.innerHTML = content[option];
         modal.classList.remove('hidden');
     } else if (option === 'github') {
         window.open('https://github.com/engineiyer', '_blank');
     } else if (option === 'blogs') {
         window.open('https://medium.com/@anshuliyer', '_blank'); // Placeholder link
-    } else if (option === 'connect') {
-        window.open('https://www.linkedin.com/in/anshul-iyer/', '_blank');
     }
 }
 
