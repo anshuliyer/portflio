@@ -279,7 +279,7 @@ function selectOption(option) {
     } else if (option === 'blogs') {
         window.open('https://medium.com/@anshuliyer', '_blank'); // Placeholder link
     } else if (option === 'connect') {
-        window.open('https://linkedin.com/in/anshuliyer', '_blank');
+        window.open('https://www.linkedin.com/in/anshul-iyer-b98a811ba/', '_blank');
     }
 }
 
