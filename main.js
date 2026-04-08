@@ -39,6 +39,7 @@ const sounds = {
         filter.connect(gain);
         gain.connect(audioCtx.destination);
         noise.start();
+        noise.stop(audioCtx.currentTime + 0.5);
     }
 };
 
@@ -57,7 +58,7 @@ const closeModal = document.querySelector('.close-modal');
 let width, height;
 let keys = {};
 let mouse = { x: 0, y: 0 };
-let player = { x: 1000, y: 1000, size: 20, speed: 5, color: '#32ff7e', trail: [] };
+let player = { x: 1000, y: 1000, size: 20, speed: 4, color: '#4A9EFF', trail: [] };
 const WORLD_SIZE = 2000;
 let camera = { x: 0, y: 0 };
 let gameState = 'boot';
@@ -66,32 +67,21 @@ let currentMenuIndex = 0;
 const menuOptions = document.querySelectorAll('.menu-item');
 
 const logMessages = [
-    "> INITIALIZING ENGINEIYER.OS...",
-    "> LOADING NEURAL KERNEL... [ OK ]",
-    "> MAPPING ANALOG IO... [ OK ]",
-    "> CALIBRATING FPGA FABRIC... [ OK ]",
-    "> ATTACHING PERIPHERALS...",
-    "> ALL SYSTEMS NOMINAL.",
-    "> USER IDENTIFIED: AN_SHUL_IYER",
-    "> WAITING FOR INPUT..."
+    "[    0.000000] Booting ENGINEIYER.OS (v2.0.24) on ARMv8-A",
+    "[    0.124510] SoC: ALLWINNER H616 (1.5GHz) | 4GB DDR4 (OK)",
+    "[    0.456231] FPGA: Fabric calibration successful (feeling silky)",
+    "[    0.892341] GPU: Loading shaders... Neural Synapse Mapped",
+    "[    1.562310] insmod haha_hihi.ko... [ WARNING: Excessive wit detected ]",
+    "[    2.124512] USER: AN_SHUL_IYER (Coffee Level: Critical)",
+    "> READY."
 ];
 
 const content = {
     about: `
         <div class="embedded">
             <h1 class="modal-title">> WHOAMI.md</h1>
-            <div class="ascii-art">
-      _________________
-     |     Google      |
-     |_________________|
-    /                   \\
-   /   ###############   \\
-  |   ## [O] _ [O] ##   |
-  |   ##     _     ##   |  <span class="arm">/</span>
-   \\   #############   /  /
-    \\_________________/  /
-          |     |       /
-      ____|     |______/
+            <div class="dino-container">
+                <img src="dino-mascot.png" alt="Google Dino Mascot" class="dino-image">
             </div>
             <div class="terminal-text">
                 <p>I am an Embedded Engineer currently working on <strong>Embedded RPCs at Google</strong>.</p>
@@ -104,9 +94,12 @@ const content = {
     connect: `
         <div class="embedded">
             <h1 class="modal-title">> CONNECT.md</h1>
+            <div class="dino-container">
+                <img src="soldering-dino.png" alt="Soldering Dino Mascot" class="dino-image soldering">
+            </div>
             <div style="margin-top:30px; line-height:2">
-                <p>> EMAIL: <a href="mailto:anshul.iyer@gmail.com" style="color:var(--accent-digital)">anshul.iyer@gmail.com</a></p>
-                <p>> LINKEDIN: <a href="https://www.linkedin.com/in/anshul-iyer" target="_blank" style="color:var(--accent-digital)">linkedin.com/in/anshul-iyer</a></p>
+                <p>> EMAIL: <a href="mailto:anshul.iyer@gmail.com" style="color:var(--accent)">anshul.iyer@gmail.com</a></p>
+                <p>> LINKEDIN: <a href="https://www.linkedin.com/in/anshul-iyer" target="_blank" style="color:var(--accent)">linkedin.com/in/anshul-iyer</a></p>
                 <p style="margin-top:20px; color:var(--text-secondary)">// CHANNEL_ESTABLISHED //</p>
             </div>
         </div>
@@ -156,7 +149,7 @@ function init() {
     // Touch Interaction
     window.addEventListener('touchstart', e => {
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        if (gameState === 'boot') return; // Handled by runBootSequence timeout or click
+        if (gameState === 'boot') return; 
 
         mouse.x = e.touches[0].clientX;
         mouse.y = e.touches[0].clientY;
@@ -177,7 +170,6 @@ function init() {
         });
     });
 
-    // Boot trigger for touch
     window.addEventListener('mousedown', () => {
         if (audioCtx.state === 'suspended') audioCtx.resume();
     });
@@ -211,40 +203,53 @@ function updateHUD() {
 }
 
 async function runBootSequence() {
-    sounds.boot();
-    for (const msg of logMessages) {
-        const p = document.createElement('p');
-        p.textContent = "";
-        bootLog.appendChild(p);
-        for (let i = 0; i < msg.length; i++) {
-            p.textContent += msg[i];
-            if (i % 2 === 0) sounds.blip();
-            await new Promise(r => setTimeout(r, 20));
-        }
-        await new Promise(r => setTimeout(r, 150));
-    }
+    const splash = document.getElementById('boot-splash');
+    const flashBtn = document.getElementById('flash-button');
+    const mockup = document.querySelector('.phone-mockup');
 
-    // Smooth transition to menu
-    await new Promise(r => setTimeout(r, 500));
-    bootLog.style.opacity = '0.3';
-    bootLog.style.transition = 'opacity 1s ease';
+    return new Promise((resolve) => {
+        flashBtn.addEventListener('click', async () => {
+            const guide = document.querySelector('.click-guide');
+            if (guide) guide.style.display = 'none';
 
-    bootMenu.classList.remove('hidden');
-    // Force reflow
-    bootMenu.offsetHeight;
-    bootMenu.classList.add('visible');
+            flashBtn.classList.add('clicked');
+            sounds.blip();
 
-    // Staggered slide-in for items
-    menuOptions.forEach((opt, i) => {
-        setTimeout(() => {
-            opt.classList.add('slide-in');
-            sounds.tick();
-        }, i * 150);
+            await new Promise(r => setTimeout(r, 600));
+            mockup.classList.add('zooming');
+
+            await new Promise(r => setTimeout(r, 1000));
+            splash.classList.add('hidden');
+
+            sounds.boot();
+
+            for (const msg of logMessages) {
+                const p = document.createElement('p');
+                p.textContent = "";
+                bootLog.appendChild(p);
+                for (let i = 0; i < msg.length; i++) {
+                    p.textContent += msg[i];
+                    if (i % 4 === 0) sounds.blip();
+                    await new Promise(r => setTimeout(r, 25));
+                }
+                await new Promise(r => setTimeout(r, 100));
+            }
+
+            await new Promise(r => setTimeout(r, 300));
+            bootLog.style.opacity = '0.3';
+            bootLog.style.transition = 'opacity 1s ease';
+
+            bootMenu.classList.remove('hidden');
+            bootMenu.offsetHeight;
+            bootMenu.classList.add('visible');
+
+            menuOptions.forEach((opt, i) => {
+                setTimeout(() => opt.classList.add('slide-in'), i * 100);
+            });
+            resolve();
+        }, { once: true });
     });
-
-    gameState = 'menu';
 }
-
 
 function handleKeyDown(e) {
     keys[e.code] = true;
@@ -288,7 +293,7 @@ function selectOption(option) {
     } else if (option === 'github') {
         window.open('https://github.com/engineiyer', '_blank');
     } else if (option === 'blogs') {
-        window.open('https://medium.com/@anshuliyer', '_blank'); // Placeholder link
+        window.open('https://medium.com/@anshuliyer', '_blank'); 
     }
 }
 
@@ -298,7 +303,6 @@ function exitGame() {
     gameState = 'menu';
 }
 
-// --- Game Engine ---
 function update() {
     if (gameState !== 'game') return;
 
@@ -319,46 +323,43 @@ function update() {
     player.trail.push({ x: player.x, y: player.y });
     if (player.trail.length > 30) player.trail.shift();
 
-    vias.forEach(v => v.pulse += 0.05);
+    vias.forEach(v => v.pulse += 0.035);
 }
 
 function draw() {
     if (gameState !== 'game') return;
 
-    ctx.fillStyle = '#050505';
+    ctx.fillStyle = '#0D0D0F';
     ctx.fillRect(0, 0, width, height);
 
     ctx.save();
     ctx.translate(-camera.x, -camera.y);
 
-    // Dynamic PCB Traces
     ctx.lineWidth = 1.5;
     traces.forEach(t => {
         const dx = (t.points[0].x - camera.x) - mouse.x;
         const dy = (t.points[0].y - camera.y) - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        ctx.strokeStyle = dist < 200 ? '#32ff7e' : '#112211';
+        ctx.strokeStyle = dist < 200 ? '#4A9EFF' : '#1A1C23';
         ctx.beginPath();
         ctx.moveTo(t.points[0].x, t.points[0].y);
         for (let i = 1; i < t.points.length; i++) ctx.lineTo(t.points[i].x, t.points[i].y);
         ctx.stroke();
     });
 
-    // Vias
     vias.forEach(v => {
         const p = (Math.sin(v.pulse) + 1) / 2;
-        ctx.fillStyle = `rgba(50, 255, 126, ${0.1 + p * 0.3})`;
+        ctx.fillStyle = `rgba(74, 158, 255, ${0.1 + p * 0.2})`;
         ctx.beginPath();
         ctx.arc(v.x, v.y, v.size, 0, Math.PI * 2);
         ctx.fill();
         if (p > 0.8) {
-            ctx.strokeStyle = `rgba(50, 255, 126, ${p - 0.8})`;
+            ctx.strokeStyle = `rgba(74, 158, 255, ${p - 0.8})`;
             ctx.beginPath(); ctx.arc(v.x, v.y, v.size * 2, 0, Math.PI * 2); ctx.stroke();
         }
     });
 
-    // Player Trail
     ctx.beginPath();
     ctx.strokeStyle = player.color;
     ctx.lineWidth = 3;
@@ -370,7 +371,6 @@ function draw() {
     ctx.stroke();
     ctx.globalAlpha = 1;
 
-    // Player
     ctx.shadowBlur = 20;
     ctx.shadowColor = player.color;
     ctx.fillStyle = player.color;
