@@ -440,6 +440,7 @@ body {
         height: 100%;
         border-radius: 0;
         border: none;
+        overflow-y: auto;
     }
 
     .hud-top {
@@ -454,6 +455,24 @@ body {
         font-size: 1rem;
     }
 
+                .terminal-loader {
+                    width: 95%;
+                }
+        
+                .boot-header {
+                    margin-bottom: 20px;
+                    padding-bottom: 15px;
+                }
+        
+                .boot-menu {
+                    margin-top: 20px;
+                    padding-left: 15px;
+                }
+        
+                .menu-item {
+                    font-size: 0.95rem;
+                    padding: 8px 15px;
+                }
     .modal-content {
         padding: 30px 20px;
         width: 95%;
@@ -471,4 +490,10 @@ body {
         padding-left: 15px;
         font-size: 0.85rem;
     }
+/* Allow the screen to scroll if the terminal overflows */
+.screen {
+    overflow-y: auto;
+    align-items: flex-start;
+    padding: 20px 0;
+}
 }
