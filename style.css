@@ -513,7 +513,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 200;
+    z-index: 210;
 }
 
 .modal-content {
@@ -543,6 +543,42 @@ body {
     color: var(--accent-digital);
 }
 
+.connect .modal-title {
+    color: var(--accent-digital);
+}
+
+.ascii-art {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.2;
+    color: var(--accent-digital);
+    margin: 20px 0;
+    white-space: pre;
+    text-align: center;
+}
+
+.arm {
+    display: inline-block;
+    transform-origin: bottom left;
+    animation: wave 1s infinite alternate ease-in-out;
+}
+
+@keyframes wave {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-30deg);
+    }
+}
+
+.terminal-text {
+    border-left: 3px solid var(--accent-digital);
+    padding-left: 20px;
+    margin-top: 30px;
+    line-height: 1.8;
+}
 /* Content Styles within Modal */
 .modal-title {
     font-size: 2.5rem;

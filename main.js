@@ -79,54 +79,26 @@ const logMessages = [
 const content = {
     about: `
         <div class="embedded">
-            <h1 class="modal-title">ANSHUL IYER</h1>
-            <p style="color: var(--accent-digital); font-family:var(--font-mono)">> ROLE: Embedded Systems Engineer</p>
-            <p style="margin-top:20px">Expert in bridging the gap between hardware and software. Specializing in high-performance digital logic, precise analog front-ends, and robust firmware for mission-critical systems.</p>
-            <div style="margin: 20px 0;">
-                <span class="skill-tag">Analog Systems</span>
-                <span class="skill-tag">Digital Design</span>
-                <span class="skill-tag">RTOS</span>
-                <span class="skill-tag">Bare-Metal C</span>
-                <span class="skill-tag">PCB Layout</span>
+            <h1 class="modal-title">> WHOAMI.md</h1>
+            <div class="ascii-art">
+      _________________
+     |     Google      |
+     |_________________|
+    /                   \\
+   /   ###############   \\
+  |   ## [O] _ [O] ##   |
+  |   ##     _     ##   |  <span class="arm">/</span>
+   \\   #############   /  /
+    \\_________________/  /
+          |     |       /
+      ____|     |______/
             </div>
-        </div>
-    `,
-    github: `
-        <div>
-            <h1 class="modal-title">GITHUB_ARCHIVE</h1>
-            <p>Accessing remote repositories...</p>
-            <div style="margin-top:20px; border:1px solid var(--accent-digital); padding:20px">
-                <p>> Location: <a href="https://github.com/engineiyer" target="_blank" style="color:var(--accent-digital)">github.com/engineiyer</a></p>
-                <p style="margin-top:10px; color:var(--text-secondary)">Notable contributions in FPGA gateware, custom RTOS ports, and high-speed driver development.</p>
+            <div class="terminal-text">
+                <p>I am an Embedded Engineer currently working on <strong>Embedded RPCs at Google</strong>.</p>
+                <p style="margin-top:15px">I like to understand how things work not just at the surface, but all the way down to electrons politely doing their job.</p>
+                <p style="margin-top:15px">I spend most of my time somewhere between analog signals, digital logic, and embedded systems, occasionally questioning why a register behaves like it has trust issues.</p>
+                <p style="margin-top:15px">Big fan of first principles—if I can’t explain it from scratch, I probably don’t understand it yet.</p>
             </div>
-        </div>
-    `,
-    blogs: `
-        <div>
-            <h1 class="modal-title">TECHNICAL_LOGS</h1>
-            <div style="display:grid; gap:15px">
-                <div style="border-left:2px solid var(--accent-digital); padding-left:15px">
-                    <h3 style="color:var(--accent-digital)">> THE_UART_MYSTERY.md</h3>
-                    <p style="font-size:0.9rem">Debugging signal integrity in high-speed asynchronous serial communication.</p>
-                </div>
-                <div style="border-left:2px solid var(--accent-digital); padding-left:15px">
-                    <h3 style="color:var(--accent-digital)">> FPGA_DSP_BENCHMARKS.bin</h3>
-                    <p style="font-size:0.9rem">Performance analysis of 24-bit FIR filters on lattice-based gateware.</p>
-                </div>
-                <div style="border-left:2px solid var(--accent-digital); padding-left:15px">
-                    <h3 style="color:var(--accent-digital)">> POWER_RAIL_NOISE.log</h3>
-                    <p style="font-size:0.9rem">Minimizing EMI in mixed-signal PCB designs.</p>
-                </div>
-            </div>
-        </div>
-    `,
-    connect: `
-        <div>
-            <h1 class="modal-title">CONNECT_INTERFACE</h1>
-            <p>> GITHUB: github.com/anshuliyer</p>
-            <p>> LINKEDIN: linkedin.com/in/anshuliyer</p>
-            <p>> EMAIL: engineiyer@google.com</p>
-            <p style="margin-top:20px; color:var(--text-secondary)">// TRANSMISSION ENCRYPTED //</p>
         </div>
     `
 };
@@ -299,9 +271,15 @@ function selectOption(option) {
         gameContainer.classList.remove('hidden');
         gameState = 'game';
         requestAnimationFrame(animate);
-    } else {
+    } else if (option === 'about') {
         modalBody.innerHTML = content[option];
         modal.classList.remove('hidden');
+    } else if (option === 'github') {
+        window.open('https://github.com/engineiyer', '_blank');
+    } else if (option === 'blogs') {
+        window.open('https://medium.com/@anshuliyer', '_blank'); // Placeholder link
+    } else if (option === 'connect') {
+        window.open('https://linkedin.com/in/anshuliyer', '_blank');
     }
 }
 
