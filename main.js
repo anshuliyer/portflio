@@ -293,7 +293,7 @@ function selectOption(option) {
     } else if (option === 'github') {
         window.open('https://github.com/engineiyer', '_blank');
     } else if (option === 'blogs') {
-        window.open('https://medium.com/@anshuliyer', '_blank'); 
+        window.open('https://www.blogger.com/blog/posts/4112323541797924597', '_blank');
     }
 }
 
